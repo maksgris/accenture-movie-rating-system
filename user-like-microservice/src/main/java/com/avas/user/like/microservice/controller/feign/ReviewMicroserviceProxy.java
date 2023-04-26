@@ -7,9 +7,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.Optional;
 
-//TODO: Add environmental variables like url = "${CURRENCY_EXCHANGE_SERVICE_HOST:http://localhost}:8000")
 
-@FeignClient(name= "review-microservice", url = "http://localhost:8100")
+@FeignClient(name = "review-microservice", url = "http://localhost:8100")
 public interface ReviewMicroserviceProxy {
 
     @GetMapping("/api/v1/review/{reviewId}")

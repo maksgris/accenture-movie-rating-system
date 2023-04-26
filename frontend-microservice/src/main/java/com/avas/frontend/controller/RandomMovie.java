@@ -13,13 +13,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("/fe")
-public class MainController {
+@RequestMapping("/fe/random")
+public class RandomMovie {
 
     @Autowired
     private MovieMicroserviceProxy movieMicroserviceProxy;
@@ -30,13 +31,13 @@ public class MainController {
 
     private final UIMovieMapper uiMovieMapper;
 
-    public MainController(UIMovieMapper uiMovieMapper) {
+    public RandomMovie(UIMovieMapper uiMovieMapper) {
         this.uiMovieMapper = uiMovieMapper;
     }
 
-    @GetMapping("/index")
-    public String showUserList(Model model) {
-        List<MovieDTO> allMovies = movieMicroserviceProxy.getMovies();
+    @GetMapping
+    public String randomMovie(Model model) {
+        List<MovieDTO> allMovies = Collections.singletonList(movieMicroserviceProxy.getRandomMovie());
 
         List<UIMovie> allMoviesUI = allMovies.stream()
                 .map(t -> uiMovieMapper.mapToUIMovie(t, reviewMicroserviceProxy.getTopReview(t.getId()),
@@ -44,6 +45,6 @@ public class MainController {
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
         model.addAttribute("allMoviesUI", allMoviesUI);
-        return "index";
+        return "randomMovie";
     }
 }

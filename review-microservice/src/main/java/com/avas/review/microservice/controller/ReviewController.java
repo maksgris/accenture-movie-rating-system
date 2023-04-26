@@ -1,9 +1,10 @@
 package com.avas.review.microservice.controller;
 
 
-import com.avas.review.microservice.business.service.ReviewService;
-import lombok.extern.log4j.Log4j2;
 import com.avas.library.model.ReviewDTO;
+import com.avas.review.microservice.business.service.ReviewService;
+import com.avas.review.microservice.controller.feign.LikeMicroserviceProxy;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,17 +27,22 @@ import java.util.Optional;
 public class ReviewController {
 
 
-    //TODO: Maybe return environment variables to demonstrate different instances of the microservice
-
     @Autowired
     ReviewService reviewService;
+    @Autowired
+    private LikeMicroserviceProxy reviewLikeMicroserviceProxy;
 
-    //TODO:Get all reviews for a movie
-    //TODO: Query parameters for sorting
-//    @GetMapping
-//    public ResponseEntity<List<ReviewDTO>> getAllReviewsForAMovie(){
-//        return null;
-//    }
+    @GetMapping("/movie/{movieId}")
+    public ResponseEntity<List<ReviewDTO>> getAllReviewsForAMovie(@PathVariable Long movieId) {
+        List<ReviewDTO> reviewList = reviewService.getAllReviewsForAMovie(movieId);
+        return ResponseEntity.ok(reviewList);
+    }
+
+    @GetMapping("/movie/top/{movieId}")
+    public ResponseEntity<ReviewDTO> getTopReviewsForAMovie(@PathVariable Long movieId) {
+        ReviewDTO topReview = reviewService.getTopReviewForAMovie(movieId);
+        return ResponseEntity.ok(topReview);
+    }
 
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<ReviewDTO>> getAllReviewsForUser(@PathVariable Long userId) {
@@ -49,7 +55,6 @@ public class ReviewController {
         List<ReviewDTO> reviewList = reviewService.getAllReviews();
         return ResponseEntity.ok(reviewList);
     }
-    //TODO: Should this receive Long or a UserDTO?
 
     @GetMapping("/{id}")
     public ResponseEntity<ReviewDTO> getReviewById(@PathVariable Long id) {
@@ -72,14 +77,14 @@ public class ReviewController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ReviewDTO> updateReview(@PathVariable Long id,
-                                                @RequestBody ReviewDTO modifiedReviewDto, BindingResult bindingResult) {
+                                                  @RequestBody ReviewDTO modifiedReviewDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             log.warn("Binding result error");
             return ResponseEntity.badRequest().build();
         }
-        ReviewDTO returnedReviewDto = reviewService.updateReviewById(modifiedReviewDto , id);
+        ReviewDTO returnedReviewDto = reviewService.updateReviewById(modifiedReviewDto, id);
         log.debug("Review with id: {} is now :{}", id, returnedReviewDto);
-        return new ResponseEntity<>(returnedReviewDto,HttpStatus.ACCEPTED);
+        return new ResponseEntity<>(returnedReviewDto, HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")

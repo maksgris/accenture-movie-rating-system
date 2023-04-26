@@ -7,11 +7,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.Optional;
 
-//TODO: Add environmental variables like url = "${CURRENCY_EXCHANGE_SERVICE_HOST:http://localhost}:8000")
 
-@FeignClient(name= "user-microservice", url = "http://localhost:8300")
+@FeignClient(name = "user-microservice", url = "http://localhost:8300")
 public interface UserMicroserviceProxy {
 
-@GetMapping("/api/v1/user/{userId}")
-public Optional<UserDTO> getUser(@PathVariable Long userId);
+    @GetMapping("/api/v1/user/{userId}")
+    public Optional<UserDTO> getUser(@PathVariable Long userId);
 }

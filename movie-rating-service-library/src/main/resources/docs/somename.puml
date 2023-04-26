@@ -1,0 +1,11 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+Controller -> ServiceLayer: Authentication Request
+ServiceLayer --> Controller: Authentication Response
+
+Controller -> ServiceLayer: Another authentication Request
+Controller <-- ServiceLayer: another authentication Response
+@enduml

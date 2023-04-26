@@ -1,19 +1,23 @@
 package com.avas.review.microservice.business.service.impl;
 
-import com.avas.review.microservice.business.repository.ReviewRepository;
-import com.avas.review.microservice.business.service.ReviewService;
-import lombok.extern.log4j.Log4j2;
 import com.avas.library.business.exceptions.ResourceAlreadyExists;
 import com.avas.library.business.exceptions.ResourceConflict;
 import com.avas.library.business.exceptions.ResourceNotFoundException;
 import com.avas.library.business.mappers.ReviewMapping;
 import com.avas.library.business.mappers.UserMapping;
+import com.avas.library.business.repository.model.Movie;
 import com.avas.library.business.repository.model.Review;
 import com.avas.library.business.repository.model.User;
 import com.avas.library.model.ReviewDTO;
+import com.avas.review.microservice.business.repository.ReviewRepository;
+import com.avas.review.microservice.business.service.ReviewService;
+import com.avas.review.microservice.controller.feign.ReviewLikeMicroserviceProxy;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,19 +26,19 @@ import java.util.Optional;
 @Service
 public class ReviewServiceImpl implements ReviewService {
     @Autowired
-    ReviewRepository reviewRepository;
-// TODO: Think how to better UserDTO's, Should they be the same DTO in both microservices, like UserDTO, or a
-//TODO: Localized version of UserDTO?
+    private ReviewRepository reviewRepository;
     @Autowired
-ReviewMapping reviewMapping;
-    //TODO: Should this be in a library? Maybe there is a way to do this without the userMapping import?
+    private ReviewMapping reviewMapping;
+    @Autowired
+    private ReviewLikeMicroserviceProxy reviewLikeMicroserviceProxy;
+
     @Autowired
     UserMapping userMapping;
 
     public List<ReviewDTO> getAllReviews() {
         List<Review> returnedReviewList = reviewRepository.findAll();
         if (returnedReviewList.isEmpty())
-            throw new ResourceNotFoundException("No reviews found");
+            return Collections.emptyList();
         log.info("movie list size is :{}", returnedReviewList.size());
         return reviewMapping.mapReviewListToReviewListDto(returnedReviewList);
 
@@ -42,10 +46,27 @@ ReviewMapping reviewMapping;
 
     public List<ReviewDTO> getAllReviewsMadeByUserById(Long userId) {
         List<Review> listReview = reviewRepository.findReviewByUserId(new User(userId));
-        if(listReview.isEmpty())
-            throw new ResourceNotFoundException("No reviews found for user:{0}", userId);
-        log.info("List of reviews by user size is :{}",listReview.size());
+        if (listReview.isEmpty())
+            return Collections.emptyList();
+        log.info("List of reviews by user size is :{}", listReview.size());
         return reviewMapping.mapReviewListToReviewListDto((listReview));
+    }
+
+    public List<ReviewDTO> getAllReviewsForAMovie(Long movieId) {
+        List<Review> listReview = reviewRepository.findReviewByMovieId(new Movie(movieId));
+        if (listReview.isEmpty())
+            return Collections.emptyList();
+        log.info("List of reviews for movie size is :{}", listReview.size());
+        return reviewMapping.mapReviewListToReviewListDto((listReview));
+    }
+
+    @Override
+    public ReviewDTO getTopReviewForAMovie(Long movieId) {
+        List<ReviewDTO> reviewDTOS = getAllReviewsForAMovie(movieId);
+        return reviewDTOS.stream()
+                .max(Comparator.comparingLong(t -> (reviewLikeMicroserviceProxy.getAllLikesForAReview(t.getId())).size()))
+                .orElse(null);
+
     }
 
     public Optional<ReviewDTO> findReviewById(Long id) {

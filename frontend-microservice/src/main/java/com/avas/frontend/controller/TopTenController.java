@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/fe")
-public class MainController {
+public class TopTenController {
 
     @Autowired
     private MovieMicroserviceProxy movieMicroserviceProxy;
@@ -27,23 +27,21 @@ public class MainController {
     private ReviewMicroserviceProxy reviewMicroserviceProxy;
     @Autowired
     private UserLikeMicroserviceProxy userLikeMicroserviceProxy;
-
     private final UIMovieMapper uiMovieMapper;
 
-    public MainController(UIMovieMapper uiMovieMapper) {
+    public TopTenController(UIMovieMapper uiMovieMapper) {
         this.uiMovieMapper = uiMovieMapper;
     }
 
-    @GetMapping("/index")
+    @GetMapping("/top-ten")
     public String showUserList(Model model) {
-        List<MovieDTO> allMovies = movieMicroserviceProxy.getMovies();
-
-        List<UIMovie> allMoviesUI = allMovies.stream()
+        List<MovieDTO> movies = movieMicroserviceProxy.getTopTenMovies();
+        List<UIMovie> allMoviesUI = movies.stream()
                 .map(t -> uiMovieMapper.mapToUIMovie(t, reviewMicroserviceProxy.getTopReview(t.getId()),
                         userLikeMicroserviceProxy.getLikesForAMovie(t.getId())))
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
         model.addAttribute("allMoviesUI", allMoviesUI);
-        return "index";
+        return "topTen";
     }
 }

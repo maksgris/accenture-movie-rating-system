@@ -10,11 +10,14 @@
             crossorigin="anonymous"></script>
 
     <script src=https://code.jquery.com/jquery-3.6.0.min.js></script>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+
 </head>
 <body>
 
 <div th:insert="navbar :: navbar"></div>
-<h2>All movies</h2>
+<h2>Top 10 Movies</h2>
 <div>
     <table class="table table-striped border-1">
         <thead>
@@ -22,7 +25,6 @@
             <th>Movie name</th>
             <th>Description</th>
             <th>Top review</th>
-            <th>All reviews</th>
             <th>Genre</th>
             <th>Likes</th>
 
@@ -33,9 +35,6 @@
             <td th:text="${movie.title}"></td>
             <td th:text="${movie.description}"></td>
             <td th:text="${'Review Text: ' +  movie.topReviewText + ' Final Score : ' + movie.score}">
-            </td>
-            <td>
-                <a th:href="@{/fe/review?id={id}(id = ${movie.id})}">All reviews for this movie</a>
             </td>
             <td th:text="${movie.movieType}"></td>
             <td th:text="${movie.likes}"></td>

@@ -1,12 +1,12 @@
 package com.avas.movieratingsystem.web.controller;
 
-import com.avas.user.microservice.business.service.UserService;
-import com.avas.user.microservice.web.controller.UserController;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.avas.library.business.exceptions.ResourceAlreadyExists;
 import com.avas.library.business.exceptions.ResourceConflict;
 import com.avas.library.business.exceptions.ResourceNotFoundException;
 import com.avas.library.model.UserDTO;
+import com.avas.user.microservice.business.service.UserService;
+import com.avas.user.microservice.web.controller.UserController;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -192,37 +192,5 @@ public class UserControllerTest {
                 .andExpect(status().isNoContent());
         verify(userService, times(1)).deleteUserById(1L);
     }
-
-
-    //TODO: Need to change some test to account for architecture changes
-//    @Test
-//    @DisplayName("Test endpoint to find all reviews made by user")
-//    public void findAllReviewesMadeByUser() throws Exception {
-//        List<ReviewDTO> listOfReviewsDto = createReviewDtoListPredefined();
-//        when(userService.getAllReviewsMadeByUserById(anyLong())).thenReturn(listOfReviewsDto);
-//
-//        mockMvc.perform(MockMvcRequestBuilders
-//                        .get(URL + "/1/reviews")
-//                        .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(MockMvcResultMatchers.jsonPath("$", hasSize(3)))
-//                .andExpect(MockMvcResultMatchers.jsonPath("$[0].id").value(1L))
-//                .andExpect(MockMvcResultMatchers.jsonPath("$[0].score").value(7))
-//                .andExpect(status().isOk());
-//        verify(userService, times(1)).getAllReviewsMadeByUserById(1L);
-//    }
-//
-//    @Test
-//    @DisplayName("Test endpoint to find empty review list of user")
-//    public void findAllReviewsMadeByUserEmpty() throws Exception {
-//        when(userService.getAllReviewsMadeByUserById(anyLong())).thenThrow(ResourceNotFoundException.class);
-//        mockMvc.perform(MockMvcRequestBuilders
-//                        .get(URL + "/1/reviews")
-//                        .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(result -> assertTrue(result.getResolvedException() instanceof ResourceNotFoundException))
-//                .andExpect(status().isNotFound());
-//        verify(userService, times(1)).getAllReviewsMadeByUserById(1L);
-//
-//    }
 
 }

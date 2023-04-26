@@ -1,12 +1,12 @@
 package com.avas.review.microservice.web.controller;
 
+import com.avas.library.business.exceptions.ResourceAlreadyExists;
+import com.avas.library.business.exceptions.ResourceConflict;
+import com.avas.library.business.exceptions.ResourceNotFoundException;
+import com.avas.library.model.MovieDTO;
 import com.avas.movie.microservice.business.service.MovieService;
 import com.avas.movie.microservice.controller.MovieController;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import main.java.com.avas.library.business.exceptions.ResourceAlreadyExists;
-import main.java.com.avas.library.business.exceptions.ResourceConflict;
-import main.java.com.avas.library.business.exceptions.ResourceNotFoundException;
-import main.java.com.avas.library.model.MovieDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

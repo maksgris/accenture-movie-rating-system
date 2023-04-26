@@ -38,9 +38,7 @@ public interface MovieTypeMapping {
 
     @Named("movieIdLongToMovie")
     default List<Movie> movieIdLongToMovie(List<Long> listOfMovieIds) {
-        //TODO: Maybe improve in some way so its functional.
-        //TODO 2: Check other CREATE methods for other services
-        if(listOfMovieIds == null)
+        if (listOfMovieIds == null)
             return new ArrayList<>();
         return listOfMovieIds.stream()
                 .map(Movie::new).collect(Collectors.toList());
