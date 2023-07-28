@@ -8,7 +8,7 @@
 		<version>2.7.1</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.avas</groupId>
+	<groupId>com.mgs</groupId>
 	<artifactId>frontend-microservice</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>frontend-microservice</name>
@@ -46,7 +46,7 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.avas</groupId>
+			<groupId>com.mgs</groupId>
 			<artifactId>movie-rating-system-library</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
@@ -70,7 +70,7 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.avas</groupId>
+			<groupId>com.mgs</groupId>
 			<artifactId>movie-rating-system-library</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>

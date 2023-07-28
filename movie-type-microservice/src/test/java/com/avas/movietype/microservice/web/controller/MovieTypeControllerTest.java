@@ -1,12 +1,12 @@
-package com.avas.movietype.microservice.web.controller;
+package com.mgs.movietype.microservice.web.controller;
 
-import com.avas.movietype.microservice.business.service.MovieTypeService;
-import com.avas.movietype.microservice.controller.MovieTypeController;
+import com.mgs.movietype.microservice.business.service.MovieTypeService;
+import com.mgs.movietype.microservice.controller.MovieTypeController;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.avas.library.business.exceptions.ResourceAlreadyExists;
-import com.avas.library.business.exceptions.ResourceConflict;
-import com.avas.library.business.exceptions.ResourceNotFoundException;
-import com.avas.library.model.MovieTypeDTO;
+import com.mgs.library.business.exceptions.ResourceAlreadyExists;
+import com.mgs.library.business.exceptions.ResourceConflict;
+import com.mgs.library.business.exceptions.ResourceNotFoundException;
+import com.mgs.library.model.MovieTypeDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,8 +21,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import java.util.List;
 import java.util.Optional;
 
-import static com.avas.movietype.microservice.test.data.MovieTypeTestData.createMovieTypeDtoListPredefined;
-import static com.avas.movietype.microservice.test.data.MovieTypeTestData.createMovieTypeDtoPredefined;
+import static com.mgs.movietype.microservice.test.data.MovieTypeTestData.createMovieTypeDtoListPredefined;
+import static com.mgs.movietype.microservice.test.data.MovieTypeTestData.createMovieTypeDtoPredefined;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyLong;
