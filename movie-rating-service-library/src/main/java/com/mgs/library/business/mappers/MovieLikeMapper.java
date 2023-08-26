@@ -6,7 +6,6 @@ import com.mgs.library.business.repository.model.User;
 import com.mgs.library.model.MovieLikeDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
 import org.mapstruct.Named;
 
 import java.util.List;
@@ -14,16 +13,12 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface MovieLikeMapper {
 
-    @Mappings({
-            @Mapping(source = "userId", target = "userId", qualifiedByName = "userIdToUserIdLong"),
-            @Mapping(source = "movieId", target = "movieId", qualifiedByName = "movieToMovieIdLong")
-    })
+    @Mapping(source = "userId", target = "userId", qualifiedByName = "userIdToUserIdLong")
+    @Mapping(source = "movieId", target = "movieId", qualifiedByName = "movieToMovieIdLong")
     MovieLikeDTO mapMovieLikeToMovieLikeDto(MovieLike userLike);
 
-    @Mappings({
-            @Mapping(source = "userId", target = "userId", qualifiedByName = "userIdLongToUserId"),
-            @Mapping(source = "movieId", target = "movieId", qualifiedByName = "movieIdLongToMovie")
-    })
+    @Mapping(source = "userId", target = "userId", qualifiedByName = "userIdLongToUserId")
+    @Mapping(source = "movieId", target = "movieId", qualifiedByName = "movieIdLongToMovie")
     MovieLike mapMovieLikeDtoToMovieLike(MovieLikeDTO userLike);
 
     List<MovieLikeDTO> mapMovieLikeListToMovieLikeDtoList(List<MovieLike> userLike);

@@ -16,29 +16,23 @@ import java.util.Date;
 @ControllerAdvice
 public class CustomizedResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 
-
     @ExceptionHandler(Exception.class)
-    public final ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest rq){
+    public final ResponseEntity<Object> handleAllExceptions(Exception ex, WebRequest rq) {
         log.warn(ex);
         ExceptionResponse exceptionResponse =
                 new ExceptionResponse(new Date(), ex.getMessage(), rq.getDescription(false));
-        return new ResponseEntity<>(exceptionResponse,HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public final ResponseEntity<Object> handleResourceNotFoundException(ResourceAlreadyExists ex, WebRequest rq){
+    public final ResponseEntity<Object> handleResourceNotFoundException(ResourceAlreadyExists ex, WebRequest rq) {
         ExceptionResponse exceptionResponse =
                 new ExceptionResponse(new Date(), ex.getLocalizedMessage(), rq.getDescription(false));
         return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
     }
+
     @ExceptionHandler(ResourceAlreadyExists.class)
-    public final ResponseEntity<Object> handleResourceAlreadyExistsException(ResourceAlreadyExists ex, WebRequest rq){
-        ExceptionResponse exceptionResponse =
-                new ExceptionResponse(new Date(), ex.getLocalizedMessage(), rq.getDescription(false));
-        return new ResponseEntity<>(exceptionResponse, HttpStatus.CONFLICT);
-    }
-    @ExceptionHandler(ResourceConflict.class)
-    public final ResponseEntity<Object> handleResourceConflictException(ResourceAlreadyExists ex, WebRequest rq){
+    public final ResponseEntity<Object> handleResourceAlreadyExistsException(ResourceAlreadyExists ex, WebRequest rq) {
         ExceptionResponse exceptionResponse =
                 new ExceptionResponse(new Date(), ex.getLocalizedMessage(), rq.getDescription(false));
         return new ResponseEntity<>(exceptionResponse, HttpStatus.CONFLICT);

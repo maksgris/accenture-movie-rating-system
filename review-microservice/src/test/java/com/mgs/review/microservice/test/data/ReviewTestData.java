@@ -25,6 +25,7 @@ public class ReviewTestData {
         reviewDTO.setUserId(userId.nextLong());
         return reviewDTO;
     }
+
     public static ReviewDTO createReviewDtoPredefined() {
         ReviewDTO reviewDTO = new ReviewDTO();
         reviewDTO.setId(1L);

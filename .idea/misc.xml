@@ -1,5 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/user-microservice/pom.xml" />
+        <option value="$PROJECT_DIR$/movie-microservice/pom.xml" />
+        <option value="$PROJECT_DIR$/review-microservice/pom.xml" />
+        <option value="$PROJECT_DIR$/frontend-microservice/pom.xml" />
+        <option value="$PROJECT_DIR$/user-like-microservice/pom.xml" />
+        <option value="$PROJECT_DIR$/user-type-microservice/pom.xml" />
+        <option value="$PROJECT_DIR$/movie-type-microservice/pom.xml" />
+        <option value="$PROJECT_DIR$/movie-rating-service-library/pom.xml" />
+      </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/frontend-microservice/pom.xml" />
+      </set>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" project-jdk-name="17" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>

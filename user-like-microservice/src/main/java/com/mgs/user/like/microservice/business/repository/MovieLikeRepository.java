@@ -12,6 +12,8 @@ import java.util.Optional;
 @Repository
 public interface MovieLikeRepository extends JpaRepository<MovieLike, Long> {
     List<MovieLike> findMovieLikeByMovieId(Movie movie);
+
     Optional<MovieLike> findByMovieIdAndUserId(Movie movie, User user);
+
     boolean existsByMovieIdAndUserId(Movie movie, User user);
 }

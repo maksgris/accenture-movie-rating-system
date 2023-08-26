@@ -12,5 +12,5 @@ import java.util.List;
 public interface ReviewLikeMicroserviceProxy {
 
     @GetMapping("/api/v1/like/review/{reviewId}/")
-    public List<ReviewLikeDTO> getAllLikesForAReview(@PathVariable Long reviewId);
+    List<ReviewLikeDTO> getAllLikesForAReview(@PathVariable Long reviewId);
 }

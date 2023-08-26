@@ -1,12 +1,14 @@
 package com.mgs.usertype.microservice;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 class UserTypeMicroserviceApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
+    @Test
+    @SuppressWarnings("squid:S2699")
+    void contextLoads() {
+    }
 
 }

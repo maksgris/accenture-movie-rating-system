@@ -1,20 +1,14 @@
 package com.mgs.movietype.microservice.controller;
 
+import com.mgs.library.model.MovieTypeDTO;
 import com.mgs.movietype.microservice.business.service.MovieTypeService;
 import lombok.extern.log4j.Log4j2;
-import com.mgs.library.model.MovieTypeDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,19 +16,19 @@ import java.util.Optional;
 @Log4j2
 @Controller
 @RequestMapping("api/v1/movie_type")
+@SuppressWarnings("squid:S3655")
 public class MovieTypeController {
 
     @Autowired
     MovieTypeService movieTypeService;
 
-
-
     @GetMapping("/name/{typeName}")
-    public ResponseEntity<MovieTypeDTO> getMovieTypeByString(@PathVariable String typeName){
+    public ResponseEntity<MovieTypeDTO> getMovieTypeByString(@PathVariable String typeName) {
         Optional<MovieTypeDTO> foundMovieType = movieTypeService.getMovieTypeByName(typeName);
         log.info("Movie type found : {}", foundMovieType.get());
         return new ResponseEntity<>(foundMovieType.get(), HttpStatus.OK);
     }
+
     @GetMapping
     public ResponseEntity<List<MovieTypeDTO>> getAllMovieTypes() {
         List<MovieTypeDTO> movieTypeList = movieTypeService.getAllMovieTypes();

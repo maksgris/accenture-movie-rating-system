@@ -8,5 +8,6 @@ import java.util.Optional;
 public interface MovieTypeRepository extends JpaRepository<MovieType, Long> {
     boolean
     existsByType(String type);
+
     Optional<MovieType> findMovieTypeByType(String type);
 }

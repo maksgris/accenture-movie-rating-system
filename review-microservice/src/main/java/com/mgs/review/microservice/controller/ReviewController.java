@@ -10,13 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -57,6 +51,7 @@ public class ReviewController {
     }
 
     @GetMapping("/{id}")
+    @SuppressWarnings("squid:S3655")
     public ResponseEntity<ReviewDTO> getReviewById(@PathVariable Long id) {
         Optional<ReviewDTO> foundReview = reviewService.findReviewById(id);
         log.info("Review found : {}", foundReview.get());
@@ -90,7 +85,6 @@ public class ReviewController {
     @DeleteMapping("/{id}")
     public ResponseEntity<ReviewDTO> deleteReviewById(@PathVariable Long id) {
         log.info("Delete Review by passing ID, where ID is:{}", id);
-        Optional<ReviewDTO> reviewDtoFound = reviewService.findReviewById(id);
         reviewService.deleteReviewById(id);
         log.debug("Review with id {} is deleted", id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

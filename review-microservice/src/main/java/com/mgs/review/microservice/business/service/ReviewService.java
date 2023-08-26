@@ -19,7 +19,6 @@ public interface ReviewService {
 
     List<ReviewDTO> getAllReviewsMadeByUserById(Long userId);
 
-    //    List<ReviewDTO> getAllReviewsForAUser(Long movieId);
     List<ReviewDTO> getAllReviewsForAMovie(Long movieId);
 
     ReviewDTO getTopReviewForAMovie(Long movieId);

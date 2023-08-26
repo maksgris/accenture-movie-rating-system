@@ -10,7 +10,10 @@ import java.util.Optional;
 
 public interface UserLikeRepository extends JpaRepository<ReviewLike, Long> {
     boolean existsByUserIdAndReviewId(User user, Review review);
+
     Optional<ReviewLike> findByUserIdAndReviewId(User user, Review review);
+
     List<ReviewLike> findAllByReviewId(Review review);
+
     List<ReviewLike> findAllByUserId(User user);
 }

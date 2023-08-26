@@ -12,5 +12,5 @@ import java.util.List;
 public interface ReviewMicroserviceProxy {
 
     @GetMapping("/api/v1/review/user/{userId}")
-    public List<ReviewDTO> getReviewsForUser(@RequestParam Long userId);
+    List<ReviewDTO> getReviewsForUser(@RequestParam Long userId);
 }

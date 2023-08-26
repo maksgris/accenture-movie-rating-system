@@ -26,6 +26,7 @@ public class UserTestData {
         userDTO.setSurname(randomSurnameList[surnameRandom.nextInt(randomSurnameList.length)]);
         return userDTO;
     }
+
     public static UserDTO createUserDtoPredefined() {
         UserDTO userDTO = new UserDTO();
         userDTO.setId(1L);
@@ -38,6 +39,7 @@ public class UserTestData {
     public static List<UserDTO> createUserDtoList() {
         return Arrays.asList(createUserDto(), createUserDto(), createUserDto(), createUserDto(), createUserDto());
     }
+
     public static List<UserDTO> createUserDtoListPredefined() {
         return Arrays.asList(createUserDtoPredefined(), createUserDtoPredefined(), createUserDtoPredefined());
     }

@@ -12,5 +12,5 @@ import java.util.Optional;
 public interface LikeMicroserviceProxy {
 
     @GetMapping("/api/v1/movie_type/name/{genre}")
-    public Optional<MovieTypeDTO> getMovieType(@PathVariable String genre);
+    Optional<MovieTypeDTO> getMovieType(@PathVariable String genre);
 }

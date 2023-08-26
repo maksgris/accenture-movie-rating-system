@@ -12,5 +12,5 @@ import java.util.Optional;
 public interface UserMicroserviceProxy {
 
     @GetMapping("/api/v1/user/{userId}")
-    public Optional<UserDTO> getUser(@PathVariable Long userId);
+    Optional<UserDTO> getUser(@PathVariable Long userId);
 }

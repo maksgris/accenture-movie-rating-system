@@ -1,12 +1,10 @@
 package com.mgs.library.business.mappers;
 
-
 import com.mgs.library.business.repository.model.Movie;
 import com.mgs.library.business.repository.model.MovieType;
 import com.mgs.library.model.MovieTypeDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
 import org.mapstruct.Named;
 
 import java.util.ArrayList;
@@ -16,14 +14,10 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "spring")
 public interface MovieTypeMapping {
 
-    @Mappings({
-            @Mapping(source = "movies", target = "movieIds", qualifiedByName = "moviesToMoviesIdLong")
-    })
+    @Mapping(source = "movies", target = "movieIds", qualifiedByName = "moviesToMoviesIdLong")
     MovieTypeDTO mapMovieTypeToMovieTypeDto(MovieType movieEntity);
 
-    @Mappings({
-            @Mapping(source = "movieIds", target = "movies", qualifiedByName = "movieIdLongToMovie")
-    })
+    @Mapping(source = "movieIds", target = "movies", qualifiedByName = "movieIdLongToMovie")
     MovieType mapMovieTypeDtoToMovieType(MovieTypeDTO movieDto);
 
     List<MovieTypeDTO> mapMovieTypeListToMovieTypeListDto(List<MovieType> movieEntities);

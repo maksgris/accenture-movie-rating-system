@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.text.MessageFormat;
 
-
+@SuppressWarnings("squid:S1165")
 @ResponseStatus(HttpStatus.CONFLICT)
 public class ResourceAlreadyExists extends RuntimeException {
     private Long resourceId;
@@ -23,6 +23,6 @@ public class ResourceAlreadyExists extends RuntimeException {
 
     @Override
     public String getLocalizedMessage() {
-        return (resourceId == null)? message : MessageFormat.format(message, resourceId);
+        return (resourceId == null) ? message : MessageFormat.format(message, resourceId);
     }
 }

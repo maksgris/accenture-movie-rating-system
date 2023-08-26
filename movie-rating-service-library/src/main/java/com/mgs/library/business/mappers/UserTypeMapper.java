@@ -5,7 +5,6 @@ import com.mgs.library.business.repository.model.UserType;
 import com.mgs.library.model.UserTypeDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
 import org.mapstruct.Named;
 
 import java.util.ArrayList;
@@ -15,14 +14,10 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "spring")
 public interface UserTypeMapper {
 
-    @Mappings({
-            @Mapping(source = "users", target = "userIds", qualifiedByName = "usersToUsersIdLong")
-    })
+    @Mapping(source = "users", target = "userIds", qualifiedByName = "usersToUsersIdLong")
     UserTypeDTO mapUserTypeToUserTypeDto(UserType userTypeEntity);
 
-    @Mappings({
-            @Mapping(source = "userIds", target = "users", qualifiedByName = "userIdLongToUser")
-    })
+    @Mapping(source = "userIds", target = "users", qualifiedByName = "userIdLongToUser")
     UserType mapUserTypeDtoToUserType(UserTypeDTO userTypeDto);
 
     List<UserTypeDTO> mapUserTypeListToUserTypeListDto(List<UserType> userTypeEntities);
@@ -37,7 +32,7 @@ public interface UserTypeMapper {
 
     @Named("userIdLongToUser")
     default List<User> userIdLongToUser(List<Long> listOfUserIds) {
-        if(listOfUserIds == null)
+        if (listOfUserIds == null)
             return new ArrayList<>();
         return listOfUserIds.stream()
                 .map(User::new).collect(Collectors.toList());

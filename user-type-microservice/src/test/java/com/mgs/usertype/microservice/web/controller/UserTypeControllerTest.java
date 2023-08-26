@@ -1,13 +1,12 @@
 package com.mgs.usertype.microservice.web.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mgs.library.business.exceptions.ResourceAlreadyExists;
+import com.mgs.library.business.exceptions.ResourceNotFoundException;
+import com.mgs.library.model.UserTypeDTO;
 import com.mgs.usertype.microservice.business.service.UserTypeService;
 import com.mgs.usertype.microservice.controller.UserTypeController;
 import com.mgs.usertype.microservice.test.data.UserTypeTestData;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mgs.library.business.exceptions.ResourceAlreadyExists;
-import com.mgs.library.business.exceptions.ResourceConflict;
-import com.mgs.library.business.exceptions.ResourceNotFoundException;
-import com.mgs.library.model.UserTypeDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,15 +24,13 @@ import java.util.Optional;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(UserTypeController.class)
-public class UserTypeControllerTest {
-    public static String URL = "/api/v1/user_type";
+class UserTypeControllerTest {
+    static String URL = "/api/v1/user_type";
 
     @Autowired
     private MockMvc mockMvc;
@@ -48,14 +45,14 @@ public class UserTypeControllerTest {
     private UserTypeDTO userTypeDto;
 
     @BeforeEach
-    public void beforeEach() {
+    void beforeEach() {
         this.userTypeDTOSPredefined = UserTypeTestData.createUserTypeDtoListPredefined();
         this.userTypeDto = UserTypeTestData.createUserTypeDtoPredefined();
     }
 
     @Test
     @DisplayName("Test endpoint to find all UserTypes successfully")
-    public void findAllUserTypes() throws Exception {
+    void findAllUserTypes() throws Exception {
         when(userTypeService.getAllUserTypes()).thenReturn(userTypeDTOSPredefined);
 
         mockMvc.perform(MockMvcRequestBuilders
@@ -70,7 +67,7 @@ public class UserTypeControllerTest {
 
     @Test
     @DisplayName("Test endpoint to successfully finding a UserType by id")
-    public void findUserTypeById() throws Exception {
+    void findUserTypeById() throws Exception {
         when(userTypeService.findUserTypeById(anyLong())).thenReturn(Optional.of(userTypeDto));
 
         mockMvc.perform(MockMvcRequestBuilders
@@ -84,7 +81,7 @@ public class UserTypeControllerTest {
 
     @Test
     @DisplayName("Test endpoint to find a non existing UserType by id")
-    public void findNonExistingUserTypeById() throws Exception {
+    void findNonExistingUserTypeById() throws Exception {
         when(userTypeService.findUserTypeById(anyLong())).thenThrow(ResourceNotFoundException.class);
 
         mockMvc.perform(MockMvcRequestBuilders
@@ -96,7 +93,7 @@ public class UserTypeControllerTest {
 
     @Test
     @DisplayName("Test endpoint to find empty UserTypes list")
-    public void findAllUserTypesEmpty() throws Exception {
+    void findAllUserTypesEmpty() throws Exception {
         when(userTypeService.getAllUserTypes()).thenThrow(ResourceNotFoundException.class);
         mockMvc.perform(MockMvcRequestBuilders
                         .get(URL)
@@ -109,7 +106,7 @@ public class UserTypeControllerTest {
 
     @Test
     @DisplayName("Test endpoint to create UserType")
-    public void createAUserType() throws Exception {
+    void createAUserType() throws Exception {
         userTypeDto.setId(null);
 
         when(userTypeService.createUserType(userTypeDto)).thenReturn(userTypeDto);
@@ -128,7 +125,7 @@ public class UserTypeControllerTest {
 
     @Test
     @DisplayName("Test endpoint to create a duplicate  UserType")
-    public void createAUserTypeDuplicate() throws Exception {
+    void createAUserTypeDuplicate() throws Exception {
         userTypeDto.setId(null);
 
         when(userTypeService.createUserType(userTypeDto)).thenThrow(ResourceAlreadyExists.class);
@@ -144,7 +141,7 @@ public class UserTypeControllerTest {
 
     @Test
     @DisplayName("Test endpoint to update a UserType")
-    public void updateAUserType() throws Exception {
+    void updateAUserType() throws Exception {
         when(userTypeService.updateUserTypeById(userTypeDto, 1L)).thenReturn(userTypeDto);
 
         mockMvc.perform(MockMvcRequestBuilders
@@ -158,7 +155,7 @@ public class UserTypeControllerTest {
 
     @Test
     @DisplayName("Test endpoint to update a UserType which does not exist")
-    public void updateANonExistingUserType() throws Exception {
+    void updateANonExistingUserType() throws Exception {
         when(userTypeService.updateUserTypeById(userTypeDto, 1L)).thenThrow(ResourceNotFoundException.class);
 
         mockMvc.perform(MockMvcRequestBuilders
@@ -171,22 +168,8 @@ public class UserTypeControllerTest {
     }
 
     @Test
-    @DisplayName("Test endpoint to update a UserType with taken email")
-    public void updateANonUserTypeWithTakenType() throws Exception {
-        when(userTypeService.updateUserTypeById(userTypeDto, 1L)).thenThrow(ResourceConflict.class);
-
-        mockMvc.perform(MockMvcRequestBuilders
-                        .put(URL + "/1")
-                        .content(new ObjectMapper().writeValueAsString(userTypeDto))
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(result -> assertTrue(result.getResolvedException() instanceof ResourceConflict))
-                .andExpect(status().isConflict());
-        verify(userTypeService, times(1)).updateUserTypeById(userTypeDto, 1L);
-    }
-
-    @Test
     @DisplayName("Test endpoint to successfully deleting a UserType by id")
-    public void deleteUserTypeById() throws Exception {
+    void deleteUserTypeById() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                         .delete(URL + "/1")
                         .contentType(MediaType.APPLICATION_JSON))

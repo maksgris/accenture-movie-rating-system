@@ -1,13 +1,12 @@
 package com.mgs.usertype.microservice.business.service.impl;
 
-
-import com.mgs.usertype.microservice.business.repository.UserTypeRepository;
-import com.mgs.usertype.microservice.test.data.UserTypeTestData;
 import com.mgs.library.business.exceptions.ResourceAlreadyExists;
 import com.mgs.library.business.exceptions.ResourceNotFoundException;
 import com.mgs.library.business.mappers.UserTypeMapper;
 import com.mgs.library.business.repository.model.UserType;
 import com.mgs.library.model.UserTypeDTO;
+import com.mgs.usertype.microservice.business.repository.UserTypeRepository;
+import com.mgs.usertype.microservice.test.data.UserTypeTestData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -23,17 +22,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class UserTypeServiceImplTest {
+@SuppressWarnings("squid:S5778")
+class UserTypeServiceImplTest {
 
     @Mock
     private UserTypeRepository userTypeRepository;
@@ -51,26 +46,26 @@ public class UserTypeServiceImplTest {
     private UserType userType;
 
     @BeforeEach
-    public void createTestData() {
+    void createTestData() {
         this.userTypeDTO = UserTypeTestData.createUserTypeDto();
         this.userType = userTypeMapper.mapUserTypeDtoToUserType(userTypeDTO);
     }
 
     @Test
     @DisplayName("Retrieval of all UserTypes")
-    public void testUserTypesSuccessfully() {
+    void testUserTypesSuccessfully() {
         List<UserTypeDTO> userTypeDtoList = UserTypeTestData.createUserTypeDtoList();
         List<UserType> movieTypeList = userTypeMapper.mapUserTypeDtoListToUserTypeList(userTypeDtoList);
         when(userTypeRepository.findAll()).thenReturn(movieTypeList);
         when(mockUserTypeMapper.mapUserTypeListToUserTypeListDto(movieTypeList)).thenReturn(userTypeDtoList);
         List<UserTypeDTO> movieTypeDtoListReturned = userTypeService.getAllUserTypes();
-        Assertions.assertTrue(userTypeDtoList.equals(movieTypeDtoListReturned));
+        Assertions.assertEquals(userTypeDtoList, movieTypeDtoListReturned);
         verify(userTypeRepository, times(1)).findAll();
     }
 
     @Test
     @DisplayName("Retrieval of empty UserType list")
-    public void testGetAllUserTypeEmpty() {
+    void testGetAllUserTypeEmpty() {
         List<UserTypeDTO> emptyUserTypeDTOList = new ArrayList<UserTypeDTO>();
         List<UserType> emptyUserList = userTypeMapper.mapUserTypeDtoListToUserTypeList(emptyUserTypeDTOList);
         when(userTypeRepository.findAll()).thenReturn(emptyUserList);
@@ -81,7 +76,7 @@ public class UserTypeServiceImplTest {
 
     @Test
     @DisplayName("Finding UserType by id")
-    public void testSuccessfullyFindingUserTypeById() {
+    void testSuccessfullyFindingUserTypeById() {
 
         when(mockUserTypeMapper.mapUserTypeToUserTypeDto(userType)).thenReturn(userTypeDTO);
         when(userTypeRepository.findById(anyLong())).thenReturn(Optional.of(userType));
@@ -91,14 +86,14 @@ public class UserTypeServiceImplTest {
 
     @Test
     @DisplayName("Find non existing UserType by id")
-    public void testFailingFindUserTypeById() {
+    void testFailingFindUserTypeById() {
         when(userTypeRepository.findById(anyLong())).thenReturn(Optional.empty());
         Assertions.assertThrows(ResourceNotFoundException.class, () -> userTypeService.findUserTypeById(anyLong()));
     }
 
     @Test
     @DisplayName("Deleting UserType by id")
-    public void testDeletingUserTypeById() {
+    void testDeletingUserTypeById() {
         doReturn(Optional.of(userTypeDTO)).when(userTypeService).findUserTypeById(1L);
         userTypeService.deleteUserTypeById(1L);
         verify(userTypeRepository, times(1)).deleteById(anyLong());
@@ -106,7 +101,7 @@ public class UserTypeServiceImplTest {
 
     @Test
     @DisplayName("Deleting when UserType does not exist")
-    public void testDeleteUserTypeNotFound() {
+    void testDeleteUserTypeNotFound() {
         doReturn(Optional.empty()).when(userTypeService).findUserTypeById(1L);
         Assertions.assertThrows(ResourceNotFoundException.class, () -> userTypeService.deleteUserTypeById(1L));
     }
@@ -114,7 +109,7 @@ public class UserTypeServiceImplTest {
 
     @Test
     @DisplayName("Create a UserType")
-    public void testSuccessfullyCreatingAUserType() {
+    void testSuccessfullyCreatingAUserType() {
         when(userTypeRepository.existsByType(userTypeDTO.getType())).thenReturn(false);
         when(mockUserTypeMapper.mapUserTypeDtoToUserType(userTypeDTO)).thenReturn(userType);
         when(userTypeRepository.save(userType)).thenReturn(userType);
@@ -124,14 +119,14 @@ public class UserTypeServiceImplTest {
 
     @Test
     @DisplayName("Create a duplicate UserType")
-    public void testFailingCreatingAUserType() {
+    void testFailingCreatingAUserType() {
         when(userTypeRepository.existsByType(anyString())).thenReturn(true);
         Assertions.assertThrows(ResourceAlreadyExists.class, () -> userTypeService.createUserType(userTypeDTO));
     }
 
     @Test
     @DisplayName("Update a UserType by Id")
-    public void testSuccessfullyUpdatingAUserTypeById() {
+    void testSuccessfullyUpdatingAUserTypeById() {
 
         when(userTypeRepository.existsById(anyLong())).thenReturn(true);
         when(userTypeRepository.existsByType(anyString())).thenReturn(false);
@@ -146,14 +141,13 @@ public class UserTypeServiceImplTest {
 
     @Test
     @DisplayName("Update UserType which does not exist")
-    public void testFailUpdatingNonExistingUserType() {
+    void testFailUpdatingNonExistingUserType() {
         when(userTypeRepository.existsById(anyLong())).thenReturn(false);
         Assertions.assertThrows(ResourceNotFoundException.class, () -> userTypeService.updateUserTypeById(userTypeDTO, 1L));
     }
 
     @Test
-    @DisplayName(("Update a UserType with already taken email"))
-    public void testFailUpdatingAUserTypeWhichDoesNotExist() {
+    void testFailUpdatingAUserTypeWhichDoesNotExist() {
         when(userTypeRepository.existsById(anyLong())).thenReturn(false);
         when(userTypeRepository.existsByType(anyString())).thenReturn(true);
         Assertions.assertThrows(ResourceNotFoundException.class, () -> userTypeService.updateUserTypeById(userTypeDTO, 1L));
@@ -161,7 +155,7 @@ public class UserTypeServiceImplTest {
 
     @Test
     @DisplayName("Delete a UserType")
-    public void testSuccessfullyDeleteAUserType() {
+    void testSuccessfullyDeleteAUserType() {
         doReturn(Optional.of(userTypeDTO)).when(userTypeService).findUserTypeById(anyLong());
         userTypeService.deleteUserTypeById(1L);
         verify(userTypeRepository, times(1)).deleteById(1L);
@@ -169,7 +163,7 @@ public class UserTypeServiceImplTest {
 
     @Test
     @DisplayName("Delete a non existing UserType")
-    public void testFailingDeleteAUserType() {
+    void testFailingDeleteAUserType() {
         doReturn(Optional.empty()).when(userTypeService).findUserTypeById(anyLong());
         Assertions.assertThrows(ResourceNotFoundException.class, () -> userTypeService.deleteUserTypeById(1L));
     }

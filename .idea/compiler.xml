@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+      </profile>
+      <profile name="Annotation profile for user-microservice" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/projectlombok/lombok/1.18.24/lombok-1.18.24.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct-processor/1.4.1.Final/mapstruct-processor-1.4.1.Final.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/mapstruct/mapstruct/1.4.1.Final/mapstruct-1.4.1.Final.jar" />
+        </processorPath>
+        <module name="user-like-microservice" />
+        <module name="review-microservice" />
+        <module name="movie-microservice" />
+        <module name="movie-type-microservice" />
+        <module name="user-type-microservice" />
+        <module name="movie-rating-system-library" />
+        <module name="user-microservice" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="frontend-microservice" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="frontend-microservice" options="-parameters" />
+      <module name="movie-microservice" options="-parameters" />
+      <module name="movie-type-microservice" options="-parameters" />
+      <module name="review-microservice" options="-parameters" />
+      <module name="user-like-microservice" options="-parameters" />
+      <module name="user-microservice" options="-parameters" />
+      <module name="user-type-microservice" options="-parameters" />
+    </option>
+  </component>
+</project>

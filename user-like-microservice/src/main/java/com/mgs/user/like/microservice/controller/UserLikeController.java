@@ -1,12 +1,6 @@
 package com.mgs.user.like.microservice.controller;
 
-
-import com.mgs.library.business.exceptions.ResourceNotFoundException;
-import com.mgs.library.model.MovieDTO;
-import com.mgs.library.model.MovieLikeDTO;
-import com.mgs.library.model.ReviewDTO;
 import com.mgs.library.model.ReviewLikeDTO;
-import com.mgs.library.model.UserDTO;
 import com.mgs.user.like.microservice.business.service.UserLikeService;
 import com.mgs.user.like.microservice.controller.feign.MovieMicroserviceProxy;
 import com.mgs.user.like.microservice.controller.feign.ReviewMicroserviceProxy;
@@ -22,11 +16,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
-import java.util.Optional;
 
 @Log4j2
 @Controller
 @RequestMapping("api/v1/like")
+@SuppressWarnings("all")
 public class UserLikeController {
 
     @Autowired
@@ -39,41 +33,26 @@ public class UserLikeController {
     @Autowired
     private ReviewMicroserviceProxy reviewMicroserviceProxy;
 
-    @GetMapping("/movie/{movieId}")
-    public ResponseEntity<List<MovieLikeDTO>> getLikesForMovie(@PathVariable Long movieId){
-        Optional<MovieDTO> movieDTO = movieMicroserviceProxy.getMovie(movieId);
-        movieDTO.orElseThrow(() -> new ResourceNotFoundException("Movie with id {0} is not found", movieId));
-        return new ResponseEntity<>(userLikeService.getAllLikesForMovie(movieDTO.get()), HttpStatus.OK);
-    }
-    @GetMapping("/review/{reviewId}")
-    public ResponseEntity<List<ReviewLikeDTO>> getAllLikesForReview(@PathVariable Long reviewId) {
-        Optional<ReviewDTO> reviewDTO = reviewMicroserviceProxy.getReview(reviewId);
-        reviewDTO.orElseThrow(() -> new ResourceNotFoundException("Review with id {0} is not found", reviewId));
-        return new ResponseEntity<>(userLikeService.getAllLikesForAReview(reviewDTO.get()), HttpStatus.OK);
-    }
-    @PutMapping("/movie/{movieId}/user/{userId}")
-    public ResponseEntity<MovieLikeDTO> toggleMovieLike(@PathVariable Long movieId, @PathVariable Long userId) {
-        Optional<MovieDTO> movieDTO = movieMicroserviceProxy.getMovie(movieId);
-        movieDTO.orElseThrow(() -> new ResourceNotFoundException("Movie with id {0} is not found", movieId));
-        Optional<UserDTO> userDTO = userMicroserviceProxy.getUser(userId);
-        userDTO.orElseThrow(() -> new ResourceNotFoundException("User with id {0} is not found", userId));
-        return userLikeService.toggleMovieLike(movieDTO.get(),userDTO.get())
-                .map(movieLikeDTO -> new ResponseEntity<>(movieLikeDTO, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.OK));
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<ReviewLikeDTO>> getAllUserLikes(@PathVariable Long userId) {
+        List<ReviewLikeDTO> userLikes = userLikeService.getAllUserLikes(userId);
+        log.info("User with id:{} has {} likes", userId, userLikes.size());
+        return new ResponseEntity<>(userLikes, HttpStatus.OK);
     }
 
+    @GetMapping("/review/{reviewId}")
+    public ResponseEntity<List<ReviewLikeDTO>> getAllLikesForReview(@PathVariable Long reviewId) {
+        List<ReviewLikeDTO> userLikes = userLikeService.getAllLikesForAReview(reviewId);
+        log.info("Review with id:{} has {} likes", reviewId, userLikes.size());
+        return new ResponseEntity<>(userLikes, HttpStatus.OK);
+    }
 
     @PutMapping("/review/{reviewId}/reviewer/{userId}")
     public ResponseEntity<ReviewLikeDTO> toggleReviewLike(@PathVariable Long reviewId, @PathVariable Long userId) {
-        Optional<ReviewDTO> reviewDTO = reviewMicroserviceProxy.getReview(reviewId);
-        reviewDTO.orElseThrow(() -> new ResourceNotFoundException("Review with id {0} is not found", reviewId));
-        Optional<UserDTO> userDTO = userMicroserviceProxy.getUser(userId);
-        userDTO.orElseThrow(() -> new ResourceNotFoundException("User with id {0} is not found", userId));
-        return userLikeService.toggleReviewLike(reviewDTO.get(),userDTO.get())
-                .map(reviewLikeDTO -> new ResponseEntity<>(reviewLikeDTO, HttpStatus.OK))
+        return userLikeService.toggleReviewLike(reviewId, userId)
+                .map(likeDTO -> new ResponseEntity<>(likeDTO, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.OK));
     }
-
 
 
 }

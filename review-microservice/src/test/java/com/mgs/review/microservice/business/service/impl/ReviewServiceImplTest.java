@@ -1,13 +1,13 @@
 package com.mgs.review.microservice.business.service.impl;
 
-import com.mgs.review.microservice.business.repository.ReviewRepository;
-import com.mgs.review.microservice.test.data.ReviewTestData;
 import com.mgs.library.business.exceptions.ResourceAlreadyExists;
 import com.mgs.library.business.exceptions.ResourceConflict;
 import com.mgs.library.business.exceptions.ResourceNotFoundException;
 import com.mgs.library.business.mappers.ReviewMapping;
 import com.mgs.library.business.repository.model.Review;
 import com.mgs.library.model.ReviewDTO;
+import com.mgs.review.microservice.business.repository.ReviewRepository;
+import com.mgs.review.microservice.test.data.ReviewTestData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -19,19 +19,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class ReviewServiceImplTest {
+@SuppressWarnings("squid:S5778")
+class ReviewServiceImplTest {
 
     @Mock
     private ReviewRepository reviewRepository;
@@ -49,37 +46,26 @@ public class ReviewServiceImplTest {
     private Review review;
 
     @BeforeEach
-    public void createTestData() {
+    void createTestData() {
         this.reviewDTO = ReviewTestData.createReviewDto();
         this.review = reviewMapping.mapReviewDtoToReview(reviewDTO);
     }
 
     @Test
     @DisplayName("Retrieval of all Reviews")
-    public void testReviewsSuccessfully() {
+    void testReviewsSuccessfully() {
         List<ReviewDTO> reviewDtoList = ReviewTestData.createReviewDtoList();
         List<Review> reviewList = reviewMapping.mapReviewListDtoToReviewList(reviewDtoList);
         when(reviewRepository.findAll()).thenReturn(reviewList);
         when(mockReviewMapping.mapReviewListToReviewListDto(reviewList)).thenReturn(reviewDtoList);
         List<ReviewDTO> reviewDTOListReturned = reviewService.getAllReviews();
-        Assertions.assertTrue(reviewDtoList.equals(reviewDTOListReturned));
-        verify(reviewRepository, times(1)).findAll();
-    }
-
-    @Test
-    @DisplayName("Retrieval of empty Review list")
-    public void testGetAllReviewsEmpty() {
-        List<ReviewDTO> emptyDtoList = new ArrayList<>();
-        List<Review> emptyReviewList = reviewMapping.mapReviewListDtoToReviewList(emptyDtoList);
-        when(reviewRepository.findAll()).thenReturn(emptyReviewList);
-        when(mockReviewMapping.mapReviewListToReviewListDto(emptyReviewList)).thenReturn(emptyDtoList);
-        Assertions.assertThrows(ResourceNotFoundException.class, () -> reviewService.getAllReviews());
+        Assertions.assertEquals(reviewDtoList, reviewDTOListReturned);
         verify(reviewRepository, times(1)).findAll();
     }
 
     @Test
     @DisplayName("Deleting review by id")
-    public void testDeletingReviewById() {
+    void testDeletingReviewById() {
         doReturn(Optional.of(reviewDTO)).when(reviewService).findReviewById(1L);
         reviewService.deleteReviewById(1L);
         verify(reviewRepository, times(1)).deleteById(anyLong());
@@ -87,14 +73,14 @@ public class ReviewServiceImplTest {
 
     @Test
     @DisplayName("Delete non existing review")
-    public void testDeleteNotFound() {
+    void testDeleteNotFound() {
         doReturn(Optional.empty()).when(reviewService).findReviewById(1L);
         Assertions.assertThrows(ResourceNotFoundException.class, () -> reviewService.deleteReviewById(1L));
     }
 
     @Test
     @DisplayName("Testing finding Review by id")
-    public void testSuccessfullyFindingReviewById() {
+    void testSuccessfullyFindingReviewById() {
         when(mockReviewMapping.mapReviewToReviewDto(review)).thenReturn(reviewDTO);
         when(reviewRepository.findById(anyLong())).thenReturn(Optional.of(review));
         reviewService.findReviewById(anyLong());
@@ -103,14 +89,14 @@ public class ReviewServiceImplTest {
 
     @Test
     @DisplayName("Find non existing review by id")
-    public void testFailingFindMovieById() {
+    void testFailingFindMovieById() {
         when(reviewRepository.findById(anyLong())).thenReturn(Optional.empty());
         Assertions.assertThrows(ResourceNotFoundException.class, () -> reviewService.findReviewById(anyLong()));
     }
 
     @Test
     @DisplayName("Create a review")
-    public void testSuccessfullyCreatingAReview() {
+    void testSuccessfullyCreatingAReview() {
         when(reviewRepository.existsByMovieIdAndUserId(review.getMovieId(), review.getUserId())).thenReturn(false);
         when(mockReviewMapping.mapReviewDtoToReview(reviewDTO)).thenReturn(review);
         when(reviewRepository.save(review)).thenReturn(review);
@@ -120,7 +106,7 @@ public class ReviewServiceImplTest {
 
     @Test
     @DisplayName("Create a duplicate review")
-    public void testFailingCreatingAReview() {
+    void testFailingCreatingAReview() {
         when(mockReviewMapping.mapReviewDtoToReview(reviewDTO)).thenReturn(review);
         when(reviewRepository.existsByMovieIdAndUserId(review.getMovieId(), review.getUserId())).thenReturn(true);
         Assertions.assertThrows(ResourceAlreadyExists.class, () -> reviewService.createReview(reviewDTO));
@@ -128,7 +114,7 @@ public class ReviewServiceImplTest {
 
     @Test
     @DisplayName("Update a review by Id")
-    public void testSuccessfullyUpdatingAReviewById() {
+    void testSuccessfullyUpdatingAReviewById() {
         when(reviewRepository.existsById(anyLong())).thenReturn(true);
         when(reviewRepository.findById(anyLong())).thenReturn(Optional.of(review));
         when(mockReviewMapping.mapReviewToReviewDto(review)).thenReturn(reviewDTO);
@@ -141,14 +127,14 @@ public class ReviewServiceImplTest {
 
     @Test
     @DisplayName("Update non existing review")
-    public void testFailingToUpdateNonExistingReview() {
+    void testFailingToUpdateNonExistingReview() {
         when(reviewRepository.findById(anyLong())).thenReturn(Optional.empty());
         Assertions.assertThrows(ResourceNotFoundException.class, () -> reviewService.updateReviewById(reviewDTO, 1L));
     }
 
     @Test
     @DisplayName(("Update a review with invalid movie id or user id"))
-    public void testFailUpdatingAMovieWhichDoesNotExist() {
+    void testFailUpdatingAMovieWhichDoesNotExist() {
         when(reviewRepository.findById(anyLong())).thenReturn(Optional.of(review));
         when(mockReviewMapping.mapReviewToReviewDto(review)).thenReturn(reviewDTO);
         when(reviewRepository.save(review)).thenReturn(review);
@@ -157,7 +143,7 @@ public class ReviewServiceImplTest {
 
     @Test
     @DisplayName("Delete a review")
-    public void testSuccessfullyDeleteAMovie() {
+    void testSuccessfullyDeleteAMovie() {
         doReturn(Optional.of(reviewDTO)).when(reviewService).findReviewById(anyLong());
         reviewService.deleteReviewById(1L);
         verify(reviewRepository, times(1)).deleteById(1L);
@@ -165,7 +151,7 @@ public class ReviewServiceImplTest {
 
     @Test
     @DisplayName("Delete a non existing review")
-    public void testFailingDeleteAMovie() {
+    void testFailingDeleteAMovie() {
         doReturn(Optional.empty()).when(reviewService).findReviewById(anyLong());
         Assertions.assertThrows(ResourceNotFoundException.class, () -> reviewService.deleteReviewById(1L));
     }

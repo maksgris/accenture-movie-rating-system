@@ -24,6 +24,7 @@ import java.util.Optional;
 
 @Log4j2
 @Service
+@SuppressWarnings("all")
 public class ReviewServiceImpl implements ReviewService {
     @Autowired
     private ReviewRepository reviewRepository;

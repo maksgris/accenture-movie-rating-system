@@ -10,8 +10,8 @@ import org.springframework.context.annotation.ComponentScan;
 @EntityScan("com.mgs.*")
 public class MovieTypeMicroserviceApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(MovieTypeMicroserviceApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(MovieTypeMicroserviceApplication.class, args);
+    }
 
 }

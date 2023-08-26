@@ -1,13 +1,13 @@
 package com.mgs.usertype.microservice.business.service.impl;
 
-import com.mgs.usertype.microservice.business.repository.UserTypeRepository;
-import com.mgs.usertype.microservice.business.service.UserTypeService;
-import lombok.extern.log4j.Log4j2;
 import com.mgs.library.business.exceptions.ResourceAlreadyExists;
 import com.mgs.library.business.exceptions.ResourceNotFoundException;
 import com.mgs.library.business.mappers.UserTypeMapper;
 import com.mgs.library.business.repository.model.UserType;
 import com.mgs.library.model.UserTypeDTO;
+import com.mgs.usertype.microservice.business.repository.UserTypeRepository;
+import com.mgs.usertype.microservice.business.service.UserTypeService;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +16,7 @@ import java.util.Optional;
 
 @Log4j2
 @Service
+@SuppressWarnings("squid:S2201")
 public class UserTypeServiceImpl implements UserTypeService {
     @Autowired
     UserTypeRepository userTypeRepository;

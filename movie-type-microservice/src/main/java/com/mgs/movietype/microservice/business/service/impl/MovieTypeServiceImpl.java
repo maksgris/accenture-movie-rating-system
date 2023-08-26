@@ -1,13 +1,13 @@
 package com.mgs.movietype.microservice.business.service.impl;
 
-import com.mgs.movietype.microservice.business.repository.MovieTypeRepository;
-import com.mgs.movietype.microservice.business.service.MovieTypeService;
-import lombok.extern.log4j.Log4j2;
 import com.mgs.library.business.exceptions.ResourceAlreadyExists;
 import com.mgs.library.business.exceptions.ResourceNotFoundException;
 import com.mgs.library.business.mappers.MovieTypeMapping;
 import com.mgs.library.business.repository.model.MovieType;
 import com.mgs.library.model.MovieTypeDTO;
+import com.mgs.movietype.microservice.business.repository.MovieTypeRepository;
+import com.mgs.movietype.microservice.business.service.MovieTypeService;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +16,7 @@ import java.util.Optional;
 
 @Log4j2
 @Service
+@SuppressWarnings("squid:S2201")
 public class MovieTypeServiceImpl implements MovieTypeService {
     @Autowired
     MovieTypeRepository movieTypeRepository;
@@ -27,7 +28,7 @@ public class MovieTypeServiceImpl implements MovieTypeService {
     public Optional<MovieTypeDTO> getMovieTypeByName(String movieTypeName) {
         Optional<MovieTypeDTO> movieTypeDTO = movieTypeRepository.findMovieTypeByType(movieTypeName)
                 .map(movieType -> movieTypeMapping.mapMovieTypeToMovieTypeDto(movieType));
-        movieTypeDTO.orElseThrow(() -> new ResourceNotFoundException("movieType with name:"+movieTypeName+" does not exist"));
+        movieTypeDTO.orElseThrow(() -> new ResourceNotFoundException("movieType with name:" + movieTypeName + " does not exist"));
         log.info("Found movie type :{}", movieTypeDTO);
         return movieTypeDTO;
     }

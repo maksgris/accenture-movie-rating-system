@@ -12,5 +12,5 @@ import java.util.Optional;
 public interface ReviewMicroserviceProxy {
 
     @GetMapping("/api/v1/review/{reviewId}")
-    public Optional<ReviewDTO> getReview(@PathVariable Long reviewId);
+    Optional<ReviewDTO> getReview(@PathVariable Long reviewId);
 }

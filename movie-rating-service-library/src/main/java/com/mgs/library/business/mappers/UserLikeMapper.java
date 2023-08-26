@@ -6,23 +6,18 @@ import com.mgs.library.business.repository.model.User;
 import com.mgs.library.model.ReviewLikeDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
 import org.mapstruct.Named;
 
 import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface UserLikeMapper {
-    @Mappings({
-            @Mapping(source = "userId", target = "userId", qualifiedByName = "userIdToUserIdLong"),
-            @Mapping(source = "reviewId", target = "reviewId", qualifiedByName = "reviewIdToReviewIdLong")
-    })
+    @Mapping(source = "userId", target = "userId", qualifiedByName = "userIdToUserIdLong")
+    @Mapping(source = "reviewId", target = "reviewId", qualifiedByName = "reviewIdToReviewIdLong")
     ReviewLikeDTO mapUserLikeToUserLikeDto(ReviewLike reviewLike);
 
-    @Mappings({
-            @Mapping(source = "userId", target = "userId", qualifiedByName = "userIdLongToUserId"),
-            @Mapping(source = "reviewId", target = "reviewId", qualifiedByName = "reviewIdLongToReviewId")
-    })
+    @Mapping(source = "userId", target = "userId", qualifiedByName = "userIdLongToUserId")
+    @Mapping(source = "reviewId", target = "reviewId", qualifiedByName = "reviewIdLongToReviewId")
     ReviewLike mapUserLikeDtoToUserLike(ReviewLikeDTO userLike);
 
     List<ReviewLikeDTO> mapUserLikeListToUserLikeDtoList(List<ReviewLike> reviewLike);

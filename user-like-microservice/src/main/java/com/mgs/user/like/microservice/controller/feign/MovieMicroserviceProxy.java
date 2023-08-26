@@ -12,5 +12,5 @@ import java.util.Optional;
 public interface MovieMicroserviceProxy {
 
     @GetMapping("/api/v1/movie/{movieId}")
-    public Optional<MovieDTO> getMovie(@PathVariable Long movieId);
+    Optional<MovieDTO> getMovie(@PathVariable Long movieId);
 }

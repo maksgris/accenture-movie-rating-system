@@ -1,24 +1,17 @@
 package com.mgs.user.microservice.web.controller;
 
-import com.mgs.user.microservice.business.service.UserService;
-import com.mgs.user.microservice.web.controller.feign.ReviewMicroserviceProxy;
-import lombok.extern.log4j.Log4j2;
 import com.mgs.library.business.exceptions.ResourceNotFoundException;
 import com.mgs.library.model.ReviewDTO;
 import com.mgs.library.model.UserDTO;
+import com.mgs.user.microservice.business.service.UserService;
+import com.mgs.user.microservice.web.controller.feign.ReviewMicroserviceProxy;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +19,7 @@ import java.util.Optional;
 @Log4j2
 @Controller
 @RequestMapping("api/v1/user")
+@SuppressWarnings("all")
 public class UserController {
 
     @Autowired

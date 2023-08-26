@@ -6,7 +6,6 @@ import com.mgs.library.business.repository.model.Review;
 import com.mgs.library.model.MovieDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
 import org.mapstruct.Named;
 
 import java.util.List;
@@ -15,21 +14,16 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "spring")
 public interface MovieMapping {
 
-    @Mappings({
-            @Mapping(source = "reviewIds", target = "reviewIds", qualifiedByName = "reviewIdsToReviewIdsLong"),
-            @Mapping(source = "movieType", target = "movieType", qualifiedByName = "movieTypeToMovieTypeString")
-
-    })
+    @Mapping(source = "reviewIds", target = "reviewIds", qualifiedByName = "reviewIdsToReviewIdsLong")
+    @Mapping(source = "movieType", target = "movieType", qualifiedByName = "movieTypeToMovieTypeString")
     MovieDTO mapMovieToMovieDto(Movie movieEntity);
 
-    @Mappings({
-            @Mapping(source = "reviewIds", target = "reviewIds", qualifiedByName = "reviewIdsLongToReviewIds"),
-            @Mapping(source = "movieType", target = "movieType", qualifiedByName = "movieTypeStringToMovieType")
-
-    })
+    @Mapping(source = "reviewIds", target = "reviewIds", qualifiedByName = "reviewIdsLongToReviewIds")
+    @Mapping(source = "movieType", target = "movieType", qualifiedByName = "movieTypeStringToMovieType")
     Movie mapMovieDtoToMovie(MovieDTO movieDto);
 
     List<MovieDTO> mapMovieListToMovieListDto(List<Movie> movieEntities);
+
     List<Movie> mapMovieDtoListToMovieList(List<MovieDTO> movieEntities);
 
     @Named("reviewIdsToReviewIdsLong")
